@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Plain vision transformer for pose estimation tasks">
+  <meta name="keywords" content="Pose, ViTPose, MoE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ViTPose+: Vision Transformer Foundation Model for Body Keypoint Detection</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./ViTPose/static/css/bulma.min.css">
+  <link rel="stylesheet" href="./ViTPose/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./ViTPose/static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./ViTPose/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./ViTPose/static/css/index.css">
+  <link rel="icon" href="./ViTPose/static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./ViTPose/static/js/fontawesome.all.min.js"></script>
+  <script src="./ViTPose/static/js/bulma-carousel.min.js"></script>
+  <script src="./ViTPose/static/js/bulma-slider.min.js"></script>
+  <script src="./ViTPose/static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ViTPose+: Vision Transformer Foundation Model for Body Keypoint Detection</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=hlYWxX8AAAAJ">Yufe Xu</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=9jH5v74AAAAJ">Jing Zhang</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=f8rAZ7MAAAAJ">Qiming Zhang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=RwlJNLcAAAAJ">Dacheng Tao</a><sup>2,1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Sydney, Australia,</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>2</sup>JD Explore Academy, China</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/hysts/ViTPose_video" class="external-link button is-normal is-rounded is-dark disabled">
+                  <span class="icon">
+                      <img width="20" alt="HuggingFace logo" src="./ViTPose/static/images/huggingface.png">
+                  </span>
+                  <span>Demo-Video</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/Gradio-Blocks/ViTPose" class="external-link button is-normal is-rounded is-dark disabled">
+                  <span class="icon">
+                      <img width="20" alt="HuggingFace logo" src="./ViTPose/static/images/huggingface.png">
+                  </span>
+                  <span>Demo-Image</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./ViTPose/static/images/Framework.svg" class="center">
+      <h2 class="subtitle has-text-centered" style="margin-top: 15px">
+        The framework of ViTPose using different prediction heads.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+        <h2 class="subtitle has-text-centered">Results on Real-world Videos</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-2">
+          <img src="https://media.giphy.com/media/2AEeuicbIjwqp2mbug/giphy.gif" class="center" height="100%">
+        </div>
+        <div class="item item-3">
+          <img src="https://media.giphy.com/media/13oe6zo6b2B7CdsOac/giphy.gif" class="center" height="100%">
+        </div>
+        <div class="item item-4">
+          <img src="https://media.giphy.com/media/4JLERHxOEgH0tt5DZO/giphy.gif" class="center" height="100%">
+        </div>
+        <div class="item item-1">
+          <img src="https://media.giphy.com/media/ZewXwZuixYKS2lZmNL/giphy.gif" class="center" height="100%">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Highlights</h2>
+        <div class="content has-text-justified">
+          <p>
+            1. Plain vision transformers for pose estimation tasks with better performance-speed trade-off.
+          </p>
+          <p>
+            2. ViTPose+ obtains SOTA performance on MS COCO, AI Challenger, MPII, OCHuman, COCO-WholeBody, AP-10K, APT-36K datasets with no harm on the inference speed.
+          </p>
+          <p>
+            3. Different properties of plain vision transformer on pose estimation tasks are demonstrated, including simplicity, scalability, flexibility, and transferability.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="subtitle has-text-centered">Results on different datasets</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/COCO.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">MS COCO</h2>
+        </div>
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/AIC.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">AI Challenger</h2>
+        </div>
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/MPII.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">MPII</h2>
+        </div>
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/OCHuman.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">OCHuman</h2>
+        </div>
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/WholeBody.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">COCO WholeBody</h2>
+        </div>
+        <div class="item item-2">
+          <img src="./ViTPose/static/images/ap10k.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">AP-10K</h2>
+        </div>
+        <div class="item item-3">
+          <img src="./ViTPose/static/images/apt36k.svg" class="center" height="100%">
+          <h2 class="subtitle has-text-centered">APT-36K</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="subtitle has-text-centered">Perceptive Analysis</h2>
+        <div class="content has-text-justified">
+          <p>
+            1. We visualize the features from the 3rd, 6th, 9th, and 12th layer of the ViTPose-B backbone and the features from the deconvolution layers with half of the images visible:
+          </p>
+          <img src="./ViTPose/static/images/Feature.svg" class="center" height="100%">
+          <p>
+            2. We visualize the attention maps of the 3rd, 6th, 9th, and 12th layer of the ViTPose-B backbone and the features from the deconvolution layers with the right wrist of the target masked:
+          </p>
+          <img src="./ViTPose/static/images/Wrist.svg" class="center" height="100%">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--/ Abstract. -->
+  </section>
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            [remote sensing](https://github.com/ViTAE-Transformer/ViTAE-Transformer-Remote-Sensing) | [matting](https://github.com/ViTAE-Transformer/ViTAE-Transformer-Matting) | [VSA](https://github.com/ViTAE-Transformer/ViTAE-VSA) | [ViTDet](https://github.com/ViTAE-Transformer/ViTDet)
+          </p>
+          <p>
+            ViTAE <a href="https://github.com/ViTAE-Transformer/ViTAE-Transformer/tree/main/Image-Classification">Image Classification</a>, <a href="https://github.com/ViTAE-Transformer/ViTAE-Transformer/tree/main/Object-Detection">Object Detection</a>, <a href="https://github.com/ViTAE-Transformer/ViTAE-Transformer/tree/main/Semantic-Segmentation">Segmentation</a>  
+          </p>
+          <p>
+             and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
+            both use deformation fields to model non-rigid scenes.
+          </p>
+          <p>
+            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
+          </p>
+          <p>
+            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section> -->
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{xu2022vitpose,
+      title={ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation},
+      author={Xu, Yufei and Zhang, Jing and Zhang, Qiming and Tao, Dacheng},
+      booktitle={Advances in Neural Information Processing Systems},
+      year={2022}
+    }</code></pre>
+<pre><code>@inproceedings{xu2022vitpose,
+  title={ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation},
+  author={Xu, Yufei and Zhang, Jing and Zhang, Qiming and Tao, Dacheng},
+  booktitle={Advances in Neural Information Processing Systems},
+  year={2022}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://homes.cs.washington.edu/~kpar/nerfies/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Source code credit to <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">nerfies</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
